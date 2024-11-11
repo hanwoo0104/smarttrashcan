@@ -15,12 +15,35 @@ def upload():
             image = request.files['image']
             image.save(image_path)
         return 'Image uploaded successfully', 200
-    return 'No image uploaded', 400
+    else:
+        action = request.form.get("action")
+        if action == "can":
+            f = open('result.txt', 'w')
+            f.write('can')
+            f.close()
+        elif action == "plastic":
+            f = open('result.txt', 'w')
+            f.write('plastic')
+            f.close()
+        elif action == "vinyl":
+            f = open('result.txt', 'w')
+            f.write('vinyl')
+            f.close()
 
-@app.route('/latest')
+@app.route('/latest', methods=["GET", "POST"])
 def latest():
     with lock:
         return render_template('index.html', img=image_path)
+    
+@app.route('/result', methods=["GET"])
+def getresult():
+    f = open('result.txt', 'r')
+    lines = f.readlines()
+    result = ""
+    for line in lines:
+        line = line.strip()
+        result = line
+    return result
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=8080, threaded=True)

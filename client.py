@@ -13,6 +13,9 @@ def capture_and_upload():
                               files={'image': img_encoded.tobytes()})
             except Exception as e:
                 print(f"Error uploading image: {e}")
+        response = requests.get('http://158.247.231.38:80/result')
+        response_text = response.text
+        # 여기부터 시리얼통신 코드
 
 if __name__ == "__main__":
     capture_and_upload()
