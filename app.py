@@ -15,7 +15,10 @@ def upload():
             image = request.files['image']
             image.save(image_path)
         return 'Image uploaded successfully', 200
-    else:
+
+@app.route('/latest', methods=["GET", "POST"])
+def latest():
+    if request.method == "POST":
         action = request.form.get("action")
         if action == "can":
             f = open('result.txt', 'w')
@@ -29,11 +32,9 @@ def upload():
             f = open('result.txt', 'w')
             f.write('vinyl')
             f.close()
-
-@app.route('/latest', methods=["GET", "POST"])
-def latest():
-    with lock:
-        return render_template('index.html', img=image_path)
+    else:
+        with lock:
+            return render_template('index.html', img=image_path)
     
 @app.route('/result', methods=["GET"])
 def getresult():
@@ -43,6 +44,10 @@ def getresult():
     for line in lines:
         line = line.strip()
         result = line
+    f.close()
+    f = open('result.txt', 'w')
+    f.write('')
+    f.close()
     return result
 
 if __name__ == '__main__':

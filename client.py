@@ -15,6 +15,7 @@ def capture_and_upload():
                 print(f"Error uploading image: {e}")
         response = requests.get('http://158.247.231.38:80/result')
         response_text = response.text
+        print(response_text)
         # 여기부터 시리얼통신 코드
 
 if __name__ == "__main__":
