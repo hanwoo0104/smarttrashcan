@@ -1,6 +1,9 @@
 import cv2
 import requests
 import time
+import serial
+
+arduino = serial.Serial('COM4', 9600)
 
 def capture_and_upload():
     camera = cv2.VideoCapture(0)
@@ -15,8 +18,13 @@ def capture_and_upload():
                 print(f"Error uploading image: {e}")
         response = requests.get('http://158.247.231.38:80/result')
         response_text = response.text
-        print(response_text)
-        # 여기부터 시리얼통신 코드
+        if response_text == "can":
+            arduino.write(b'cola')
+        elif response_text == "plastic":
+            arduino.write(b'fanta')
+        elif response_text == "vinyl":
+            arduino.write(b'ohyes')
+        
 
 if __name__ == "__main__":
     capture_and_upload()
