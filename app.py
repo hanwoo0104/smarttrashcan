@@ -32,9 +32,8 @@ def latest():
             f = open('result.txt', 'w')
             f.write('vinyl')
             f.close()
-    else:
-        with lock:
-            return render_template('index.html', img=image_path)
+    with lock:
+        return render_template('index.html', img=image_path)
     
 @app.route('/result', methods=["GET"])
 def getresult():
